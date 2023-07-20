@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context="com.samplekit.sample.com.samplekit.app.MainActivity">
+
+    <Button
+        android:id="@+id/btn_files"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="选择文件"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_apk"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="选择Apk"
+        app:layout_constraintTop_toBottomOf="@id/btn_files"  />
+
+    <Button
+        android:id="@+id/btn_dir"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="选择文件夹"
+        app:layout_constraintTop_toBottomOf="@id/btn_apk" />
+
+
+    <Button
+        android:id="@+id/btn_installed_packages"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="已安装的应用"
+        app:layout_constraintTop_toBottomOf="@id/btn_dir" />
+
+    <TextView
+        android:id="@+id/tv_log"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:textColor="@color/sample_color_text"
+        app:layout_constraintTop_toBottomOf="@id/btn_installed_packages" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

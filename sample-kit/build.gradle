@@ -1,0 +1,42 @@
+plugins {
+    id 'com.android.library'
+}
+
+android {
+    namespace 'com.samplekit'
+    compileSdk rootProject.ext.compileSdkVersion
+
+    defaultConfig {
+        minSdk rootProject.ext.minSdkVersion
+        targetSdk rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    buildFeatures {
+        viewBinding true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    resourcePrefix "sample_"
+}
+
+dependencies {
+
+    api 'androidx.appcompat:appcompat:1.4.1'
+    api 'com.google.android.material:material:1.5.0'
+    api 'com.google.code.gson:gson:2.10.1'
+    implementation "com.github.permissions-dispatcher:permissionsdispatcher:4.9.2"
+    annotationProcessor "com.github.permissions-dispatcher:permissionsdispatcher-processor:4.9.2"
+}
+apply from: '../publish.gradle'
