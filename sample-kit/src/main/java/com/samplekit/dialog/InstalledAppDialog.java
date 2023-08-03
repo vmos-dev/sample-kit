@@ -24,11 +24,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 
+import com.samplekit.R;
+import com.samplekit.adapters.BaseBindingAdapter;
 import com.samplekit.adapters.InstalledAdapter;
 import com.samplekit.bean.InstalledInfo;
 import com.samplekit.utils.GsonUtils;
-import com.samplekit.R;
-import com.samplekit.adapters.BaseBindingAdapter;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -136,7 +136,7 @@ public abstract class InstalledAppDialog extends BaseBottomSheetDialogFragment {
 
                     final int spanCount = getSpanCount();
                     recyclerView.setLayoutManager(spanCount > 1 ? new GridLayoutManager(context, spanCount) : new LinearLayoutManager(context));
-                    BaseBindingAdapter<InstalledInfo, ? extends ViewBinding> installedAdapter = newRecyclerViewAdapter(result);
+                    final BaseBindingAdapter<InstalledInfo, ? extends ViewBinding> installedAdapter = newRecyclerViewAdapter(result);
                     installedAdapter.setOnItemClickListener((v, position) -> {
                         if (mOnClickInstalledItemListener != null) {
                             mOnClickInstalledItemListener.onClickInstalledItem(installedAdapter.getData().get(position), position);
@@ -166,7 +166,12 @@ public abstract class InstalledAppDialog extends BaseBottomSheetDialogFragment {
     }
 
     protected int getSpanCount() {
-        return 4;
+        int rootViewWidth = getView().getWidth();
+        if (rootViewWidth <= 0) {
+            rootViewWidth = getResources().getDisplayMetrics().widthPixels;
+        }
+        int itemSize = getResources().getDimensionPixelSize(R.dimen.sample_item_installed_max_size);
+        return (int) Math.max(4, Math.floor((double)  rootViewWidth/ itemSize));
     }
 
     public void show(@NonNull FragmentManager manager) {

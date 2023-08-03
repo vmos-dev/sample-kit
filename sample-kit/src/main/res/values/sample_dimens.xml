@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="sample_item_installed_max_size">110dp</dimen>
+</resources>

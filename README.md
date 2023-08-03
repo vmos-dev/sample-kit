@@ -7,7 +7,7 @@
 ## Gradle
 
 ```
-implementation 'com.vmos:sample-kit:1.0.4'
+implementation 'com.vmos:sample-kit:1.0.6'
 ```
 
 
