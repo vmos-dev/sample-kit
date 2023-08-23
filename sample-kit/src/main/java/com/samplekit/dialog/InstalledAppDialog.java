@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.AdaptiveIconDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -28,6 +30,7 @@ import com.samplekit.R;
 import com.samplekit.adapters.BaseBindingAdapter;
 import com.samplekit.adapters.InstalledAdapter;
 import com.samplekit.bean.InstalledInfo;
+import com.samplekit.graphics.CustomAdaptiveIconDrawable;
 import com.samplekit.utils.GsonUtils;
 
 import java.io.File;
@@ -98,7 +101,11 @@ public abstract class InstalledAppDialog extends BaseBottomSheetDialogFragment {
                             final String appName = pkg.applicationInfo.loadLabel(pm).toString();
                             final String sourcePath = pkg.splitNames == null ? apkFile.getAbsolutePath() : apkFile.getParent();
                             final InstalledInfo info = new InstalledInfo(packageName, appName, apkFile.length(), sourcePath);
-                            final Drawable icon = pkg.applicationInfo.loadIcon(pm);
+                            info.setDebuggable((pkg.applicationInfo.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0);
+                            Drawable icon = pkg.applicationInfo.loadIcon(pm);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && icon instanceof AdaptiveIconDrawable) {
+                                icon = new CustomAdaptiveIconDrawable((AdaptiveIconDrawable) icon);
+                            }
                             info.setIcon(icon);
                             infos.add(info);
                         }
@@ -109,13 +116,9 @@ public abstract class InstalledAppDialog extends BaseBottomSheetDialogFragment {
                 try {
                     // java.lang.IllegalArgumentException: Comparison method violates its general contract!
                     Collections.sort(infos, (o1, o2) -> {
-                        final String top = "com.vlite.unittest";
-                        boolean o1IsTop = top.equals(o1.getPackageName());
-                        boolean o2IsTop = top.equals(o2.getPackageName());
-
-                        if (o1IsTop && !o2IsTop) {
+                        if (o1.isDebuggable() && !o2.isDebuggable()) {
                             return -1;  // o1在前，o2在后
-                        } else if (!o1IsTop && o2IsTop) {
+                        } else if (!o1.isDebuggable() && o2.isDebuggable()) {
                             return 1;   // o2在前，o1在后
                         } else {
                             return Long.compare(o2.getLength(), o1.getLength());  // 按长度降序排列

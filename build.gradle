@@ -10,12 +10,12 @@ plugins {
 }
 
 ext {
-    minSdkVersion = 19
+    minSdkVersion = 21
     targetSdkVersion = 33
     compileSdkVersion = 33
 
-    versionCode = 6
-    versionName = "1.0.6"
+    versionCode = 7
+    versionName = "1.0.7"
     groupId = 'com.vmos'
     description = 'android sample kit'
     gitUrl = 'https://github.com/vmos-dev/sample-kit'

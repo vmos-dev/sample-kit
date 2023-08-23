@@ -8,6 +8,7 @@ public class InstalledInfo {
     private long length;
     private String sourcePath;
 
+    private boolean debuggable;
     private transient Drawable icon;
 
     public InstalledInfo() {
@@ -58,5 +59,13 @@ public class InstalledInfo {
 
     public void setIcon(Drawable icon) {
         this.icon = icon;
+    }
+
+    public boolean isDebuggable() {
+        return debuggable;
+    }
+
+    public void setDebuggable(boolean debuggable) {
+        this.debuggable = debuggable;
     }
 }
