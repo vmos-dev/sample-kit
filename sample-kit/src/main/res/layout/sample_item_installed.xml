@@ -20,8 +20,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
+
+            <com.google.android.material.imageview.ShapeableImageView
+                app:shapeAppearance="@style/RoundedAppLogo"
                 android:id="@+id/iv_logo"
+                android:background="@android:color/white"
                 android:layout_width="44dp"
                 android:layout_height="44dp"
                 app:layout_constraintEnd_toEndOf="parent"

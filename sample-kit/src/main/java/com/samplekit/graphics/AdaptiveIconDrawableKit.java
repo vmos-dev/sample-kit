@@ -21,7 +21,6 @@ import android.graphics.drawable.AdaptiveIconDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.DisplayMetrics;
-import android.util.Log;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
@@ -55,7 +54,7 @@ import java.lang.reflect.Method;
  * </pre>
  */
 @RequiresApi(api = Build.VERSION_CODES.O)
-public class CustomAdaptiveIconDrawable extends AdaptiveIconDrawable implements Drawable.Callback {
+public class AdaptiveIconDrawableKit extends AdaptiveIconDrawable implements Drawable.Callback {
 
     /**
      * Mask path is defined inside device configuration in following dimension: [100 x 100]
@@ -127,7 +126,7 @@ public class CustomAdaptiveIconDrawable extends AdaptiveIconDrawable implements 
     /**
      * Constructor used for xml inflation.
      */
-    CustomAdaptiveIconDrawable() {
+    AdaptiveIconDrawableKit() {
         this((LayerState) null, null);
     }
 
@@ -135,11 +134,11 @@ public class CustomAdaptiveIconDrawable extends AdaptiveIconDrawable implements 
      * The one constructor to rule them all. This is called by all public
      * constructors to set the state and initialize local properties.
      */
-    CustomAdaptiveIconDrawable(@Nullable LayerState state, @Nullable Resources res) {
+    AdaptiveIconDrawableKit(@Nullable LayerState state, @Nullable Resources res) {
         super(null, null);
-        if (!sInitialized) {
-            Log.e("AdaptiveIconDrawable", "shape not initialized", new Throwable());
-        }
+//        if (!sInitialized) {
+//            Log.e("AdaptiveIconDrawable", "shape not initialized", new Throwable());
+//        }
         mLayerState = createConstantState(state, res);
 
         if (sMask == null) {
@@ -161,7 +160,7 @@ public class CustomAdaptiveIconDrawable extends AdaptiveIconDrawable implements 
 
     public static @NonNull Drawable wrapNonNull(@NonNull Drawable icon) {
         if (icon.getClass() == AdaptiveIconDrawable.class) {
-            return new CustomAdaptiveIconDrawable((AdaptiveIconDrawable) icon);
+            return new AdaptiveIconDrawableKit((AdaptiveIconDrawable) icon);
         }
         return icon;
     }
@@ -185,8 +184,8 @@ public class CustomAdaptiveIconDrawable extends AdaptiveIconDrawable implements 
      * @param backgroundDrawable drawable that should be rendered in the background
      * @param foregroundDrawable drawable that should be rendered in the foreground
      */
-    public CustomAdaptiveIconDrawable(Drawable backgroundDrawable,
-                                      Drawable foregroundDrawable) {
+    public AdaptiveIconDrawableKit(Drawable backgroundDrawable,
+                                   Drawable foregroundDrawable) {
         this((LayerState)null, null);
         if (backgroundDrawable != null) {
             addLayer(BACKGROUND_ID, createChildDrawable(backgroundDrawable));
@@ -196,7 +195,7 @@ public class CustomAdaptiveIconDrawable extends AdaptiveIconDrawable implements 
         }
     }
 
-    public CustomAdaptiveIconDrawable(AdaptiveIconDrawable drawable) {
+    public AdaptiveIconDrawableKit(AdaptiveIconDrawable drawable) {
         this(drawable.getBackground(), drawable.getForeground());
     }
 
@@ -728,7 +727,7 @@ public class CustomAdaptiveIconDrawable extends AdaptiveIconDrawable implements 
      * @hide
      */
     public void clearMutated() {
-        final Class<? extends CustomAdaptiveIconDrawable> cls = getClass();
+        final Class<? extends AdaptiveIconDrawableKit> cls = getClass();
         try {
             // super.clearMutated();
             Method clearMutatedMethod = cls.getSuperclass().getDeclaredMethod("clearMutated");
@@ -884,12 +883,12 @@ public class CustomAdaptiveIconDrawable extends AdaptiveIconDrawable implements 
 
         @Override
         public Drawable newDrawable() {
-            return new CustomAdaptiveIconDrawable(this, null);
+            return new AdaptiveIconDrawableKit(this, null);
         }
 
         @Override
         public Drawable newDrawable(@Nullable Resources res) {
-            return new CustomAdaptiveIconDrawable(this, res);
+            return new AdaptiveIconDrawableKit(this, res);
         }
 
         @Override

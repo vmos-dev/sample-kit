@@ -30,7 +30,7 @@ import com.samplekit.R;
 import com.samplekit.adapters.BaseBindingAdapter;
 import com.samplekit.adapters.InstalledAdapter;
 import com.samplekit.bean.InstalledInfo;
-import com.samplekit.graphics.CustomAdaptiveIconDrawable;
+import com.samplekit.graphics.AdaptiveIconDrawableKit;
 import com.samplekit.utils.GsonUtils;
 
 import java.io.File;
@@ -104,7 +104,7 @@ public abstract class InstalledAppDialog extends BaseBottomSheetDialogFragment {
                             info.setDebuggable((pkg.applicationInfo.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0);
                             Drawable icon = pkg.applicationInfo.loadIcon(pm);
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && icon instanceof AdaptiveIconDrawable) {
-                                icon = new CustomAdaptiveIconDrawable((AdaptiveIconDrawable) icon);
+                                icon = new AdaptiveIconDrawableKit((AdaptiveIconDrawable) icon);
                             }
                             info.setIcon(icon);
                             infos.add(info);
