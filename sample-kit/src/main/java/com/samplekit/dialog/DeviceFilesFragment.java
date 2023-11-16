@@ -2,6 +2,7 @@ package com.samplekit.dialog;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
@@ -66,11 +67,19 @@ public class DeviceFilesFragment extends FilesFragment {
     private void requestExternalFilesFromDeviceWithPermissionCheckApi30(String directoryPath, Integer queryDirectoryId) {
         this.directoryPathApi30 = directoryPath;
         this.queryDirectoryIdApi30 = queryDirectoryId;
-        if (Environment.isExternalStorageManager()) {
-            requestExternalFilesFromDevice(directoryPath, queryDirectoryId);
+
+        // 有的系统上没这个界面
+        final Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+        final ResolveInfo resolveInfo = requireContext().getPackageManager().resolveActivity(intent, 0);
+        if (resolveInfo == null) {
+            // 不支持新版本申请的方式的 就走老版本流程
+            DeviceFilesFragmentPermissionsDispatcher.requestExternalFilesFromDeviceWithPermissionCheck(this, directoryPath, queryDirectoryId);
         } else {
-            final Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
-            startActivityForResult(intent, REQUEST_CODE_PERMISSION);
+            if (Environment.isExternalStorageManager()) {
+                requestExternalFilesFromDevice(directoryPath, queryDirectoryId);
+            } else {
+                startActivityForResult(intent, REQUEST_CODE_PERMISSION);
+            }
         }
     }
 
