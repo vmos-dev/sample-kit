@@ -57,6 +57,10 @@ public abstract class InstalledAppDialog extends BaseBottomSheetDialogFragment {
         return this;
     }
 
+    public OnClickInstalledItemListener getOnClickInstalledItemListener() {
+        return mOnClickInstalledItemListener;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -140,26 +144,30 @@ public abstract class InstalledAppDialog extends BaseBottomSheetDialogFragment {
                     final int spanCount = getSpanCount();
                     recyclerView.setLayoutManager(spanCount > 1 ? new GridLayoutManager(context, spanCount) : new LinearLayoutManager(context));
                     final BaseBindingAdapter<InstalledInfo, ? extends ViewBinding> installedAdapter = newRecyclerViewAdapter(result);
-                    installedAdapter.setOnItemClickListener((v, position) -> {
-                        if (mOnClickInstalledItemListener != null) {
-                            mOnClickInstalledItemListener.onClickInstalledItem(installedAdapter.getData().get(position), position);
-                        }
-                        dismiss();
-                    });
-                    installedAdapter.setOnItemLongClickListener((v, position) -> {
-                        final InstalledInfo item = installedAdapter.getData().get(position);
-                        AlertDialog dialog = new AlertDialog.Builder(v.getContext())
-                                .setTitle(item.getAppName())
-                                .setMessage(GsonUtils.toPrettyJson(item))
-                                .show();
-                        final TextView tv = dialog.findViewById(android.R.id.message);
-                        tv.setTextIsSelectable(true);
-                    });
+                    applyInstalledAdapterConfig(installedAdapter);
                     recyclerView.setAdapter(installedAdapter);
                     mLoadingView.setVisibility(View.GONE);
                 }
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    protected void applyInstalledAdapterConfig(BaseBindingAdapter<InstalledInfo, ? extends ViewBinding> installedAdapter) {
+        installedAdapter.setOnItemClickListener((v, position) -> {
+            if (mOnClickInstalledItemListener != null) {
+                mOnClickInstalledItemListener.onClickInstalledItem(installedAdapter.getData().get(position), position);
+            }
+            dismiss();
+        });
+        installedAdapter.setOnItemLongClickListener((v, position) -> {
+            final InstalledInfo item = installedAdapter.getData().get(position);
+            AlertDialog dialog = new AlertDialog.Builder(v.getContext())
+                    .setTitle(item.getAppName())
+                    .setMessage(GsonUtils.toPrettyJson(item))
+                    .show();
+            final TextView tv = dialog.findViewById(android.R.id.message);
+            tv.setTextIsSelectable(true);
+        });
     }
 
     protected abstract List<PackageInfo> getInstalledPackages();
